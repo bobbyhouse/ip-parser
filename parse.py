@@ -13,36 +13,7 @@ from HTMLParser import HTMLParser
 PATH = './'
 FILE = 'tor-ips'
 FILETYPE = 'csv'
-URI = 'http://localhost:3000'
-
-
-"""
-TorParser is a class that overrides the default HTMLParser
-implementation to write IP addresses to a file
-
-"""
-class TorParser(HTMLParser):
-
-    """
-    Keep a reference to the file stream
-    """
-    def __init__(self, f):
-        self.__f = f
-        HTMLParser.__init__(self)
-
-    def __isIP(self, string):
-        regex = r'^[0-9]+(?:\.[0-9]+){3}$'
-        return re.match(regex, string) == True
-
-    """
-    Write IP address to a file
-    """
-    def handle_data(self, data):
-        line = "{0}\n".format(data)
-
-        if self.__isIP(data):
-            print "+ {0}".format(data)
-            self.__f.write(data)
+URI = 'https://www.dan.me.uk/torlist'
 
 
 def main():
@@ -58,30 +29,31 @@ def main():
     # that we will write to
     path_to_file = os.path.join(os.path.abspath(PATH), file_name)
 
-    # Open a file for writing
-    # If the file already exists it will be overwritten
-    f = open(path_to_file, 'w')
 
-    # Write the header of the file
-    f.write("Addy\n")
+    try:
+        # Get the data from the server
+        resp = urllib2.urlopen(URI).read()
 
-    # Get the data from the server
-    resp = urllib2.urlopen(URI).read()
+        # Open a file for writing
+        # If the file already exists it will be overwritten
+        f = open(path_to_file, 'w')
 
-    # Stop doing work if we don't get back any data and exit
-    if not resp:
-        print "Didn't get a response from the server"
-        sys.exit(0)
+        # Write the header of the file
+        f.write("Addy\n")
 
-    # Create a new instance of our parser function and give it a handle
-    # to our file
-    torParser = TorParser(f)
+        # Write the data to the file
+        f.write(resp)
 
-    # Invoke parse
-    torParser.feed(resp)
+        # Close stream to open file
+        f.close()
 
-    # Close stream to open file
-    f.close()
+    except urllib2.HTTPError, e:
+        print e
+        sys.exit(1)
+
+
+    sys.exit(0)
+
 
 
 if __name__ == "__main__":
