@@ -69,7 +69,7 @@ def main():
     resp = urllib2.urlopen(URI).read()
 
     # Stop doing work if we don't get back any data and exit
-    if not resp
+    if not resp:
         print "Didn't get a response from the server"
         sys.exit(0)
 
