@@ -9,9 +9,7 @@ from datetime import datetime
 
 URI = 'https://www.dan.me.uk/torlist'
 
-message= "CEF:0|Tor Node|Tor Nodes 0.1|100|1|Malicious {0}|1|shost={0} cs1={0} \
-cs1Label=Source  cs2={0} cs2Label=ConfidenceLevel cs3={0} \
-cs3Label=Description"
+message= "CEF:0|Tor Node|Tor Node |307|1|Suspect Tor Node {0}|7|src={0} "
 
 ip_regex = re.compile("^\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3}$")
 
