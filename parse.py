@@ -3,7 +3,8 @@
 # Scrapes https://www.dan.me.uk/torlist for ip list import into SIEM via CEF/Syslog
 # bobbyhouse at gmail.com
 # https://github.com/bobbyhouse/ip-parser
-#
+# Dan updates his list every 30 minutes
+# Keep in mind he will block anyone that exceeds once every 30 min
 #----------------------------------------------------------------------------
 # 
 #Copyright 2012 Bobby House
