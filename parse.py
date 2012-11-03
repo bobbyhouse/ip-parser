@@ -23,6 +23,19 @@ message= "CEF:0|Tor Node|Tor Node |0.0.7|1|Suspect Tor Node |7|src={0} "
 ip_regex = re.compile("^\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3}$")
 
 
+class Logger(object):
+    def __init__(self, filename="Default.log"):
+        self.terminal = sys.stdout
+        self.log = open(filename, "a")
+        self.cr_pattern = re.compile("^.*\r", re.M)
+        self.bs_pattern = re.compile(".\b")
+
+    def write(self, message):
+        self.terminal.write(message)
+        message = self.bs_pattern.sub('', self.cr_pattern.sub('', message))
+        self.log.write(message)
+
+sys.stdout = Logger("Torlist.csv")
 def main():
 
     try:
@@ -37,9 +50,4 @@ def main():
         print e
         sys.exit(1)
 
-
     sys.exit(0)
-
-
-if __name__ == "__main__":
-    main()
